@@ -6,6 +6,7 @@ import eu.luftiger.whitelistbot.discordbot.database.DataSourceProvider;
 import eu.luftiger.whitelistbot.discordbot.database.DatabaseQueryHandler;
 import eu.luftiger.whitelistbot.discordbot.database.DatabaseSetup;
 import eu.luftiger.whitelistbot.discordbot.listener.BotJoinListener;
+import eu.luftiger.whitelistbot.discordbot.scheduler.UpdateDatabaseScheduler;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -26,6 +27,7 @@ public class WhitelistBot {
     private DataSource dataSource;
     private DatabaseQueryHandler databaseQueryHandler;
     private GuildsProvider guildsProvider;
+    private UpdateDatabaseScheduler updateDatabaseScheduler;
     private JDA jda;
     private CommandHandler commandHandler;
 
@@ -53,11 +55,15 @@ public class WhitelistBot {
         guildsProvider = new GuildsProvider(databaseQueryHandler);
         guildsProvider.loadGuilds();
 
+        updateDatabaseScheduler = new UpdateDatabaseScheduler(this);
+        updateDatabaseScheduler.start();
+
         logger.info("starting discord bot...");
         jda = JDABuilder.createDefault(configurationHandler.getConfiguration().getBotToken(), GatewayIntent.GUILD_MEMBERS)
                 .setActivity(Activity.of(Activity.ActivityType.valueOf(configurationHandler.getConfiguration().getBotActivityType()), configurationHandler.getConfiguration().getBotActivityName()))
                 .setStatus(OnlineStatus.valueOf(configurationHandler.getConfiguration().getBotStatus()))
                 .addEventListeners(new BotJoinListener(this))
+                .addEventListeners(new CommandHandler(this))
                 .build();
 
         jda.awaitReady();

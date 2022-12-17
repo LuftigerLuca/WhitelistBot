@@ -14,3 +14,4 @@ database:
     database: "database name"
     username: "username"
     password: "password"
+    updateperiod: 10 #in seconds

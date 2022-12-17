@@ -49,8 +49,9 @@ public record Configuration(BotConfiguration discordbot,
         return database.password();
     }
 
-
-
+    public int getDatabaseUpdatePeriod() {
+        return database.updateperiod();
+    }
 }
 
 record BotConfiguration(String token,
@@ -66,6 +67,7 @@ record DatabaseConfiguration(String host,
                              int port,
                              String database,
                              String username,
-                             String password){
+                             String password,
+                             int updateperiod) {
 
 }

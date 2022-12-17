@@ -1,0 +1,7 @@
+#errors
+nopermission: "You don't have permission to use this command."
+novalidlanguage: "Language must be either 'en' or 'de'."
+
+#messages
+changedprefix: "Changed prefix to %prefix"
+changedlanguage: "Changed language to %language"

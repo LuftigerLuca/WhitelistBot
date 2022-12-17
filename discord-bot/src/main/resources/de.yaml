@@ -1,0 +1,6 @@
+nopermission: "Dir fehlt die Berechtigung, diesen Befehl auszuführen."
+novalidlanguage: "Es sind nur 'de' und 'en' als Sprachen verfügbar."
+
+#messages
+changedprefix: "Der Prefix wurde zu %prefix geändert."
+changedlanguage: "Die Sprache wurde zu %language geändert."
