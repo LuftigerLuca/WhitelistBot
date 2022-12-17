@@ -26,16 +26,24 @@ public class GuildsProvider {
     }
     public void addGuild(BotGuild guild) {
         this.guilds.add(guild);
-        databaseQueryHandler.addGuild(guild);
     }
 
     public void removeGuild(BotGuild guild) {
         this.guilds.remove(guild);
     }
 
-    public void addUserToGuild(BotGuild guild, BotUser user) {
-        guild.addUser(user);
-        databaseQueryHandler.addUser(user);
+    public void updateDatabase() {
+        for (BotGuild guild : guilds) {
+
+            databaseQueryHandler.addGuild(guild);
+            for (BotUser user : guild.getUsers()) {
+                databaseQueryHandler.addUser(user);
+            }
+        }
+    }
+
+    public BotGuild getBotGuildByID(String guildId) {
+        return guilds.stream().filter(guild -> guild.getGuildId().equals(guildId)).findFirst().orElse(null);
     }
 
     public List<BotGuild> getGuilds() {

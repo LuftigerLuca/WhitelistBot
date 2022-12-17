@@ -5,10 +5,8 @@ public class BotUser {
     private final String userId;
     private final String guildId;
     private boolean canConfigure;
-    private boolean canWhitelistOthers;
-    private boolean canWhitelistSelf;
-    private boolean canUnwhitelistOthers;
-    private boolean canUnwhitelistSelf;
+    private boolean canWhitelist;
+    private boolean canUnwhitelist;
 
     public BotUser(String userId, String guildId) {
         this.userId = userId;
@@ -20,23 +18,13 @@ public class BotUser {
         return this;
     }
 
-    public BotUser setCanWhitelistOthers(boolean canWhitelistOthers) {
-        this.canWhitelistOthers = canWhitelistOthers;
+    public BotUser setCanWhitelist(boolean canWhitelist) {
+        this.canWhitelist = canWhitelist;
         return this;
     }
 
-    public BotUser setCanWhitelistSelf(boolean canWhitelistSelf) {
-        this.canWhitelistSelf = canWhitelistSelf;
-        return this;
-    }
-
-    public BotUser setCanUnwhitelistOthers(boolean canUnwhitelistOthers) {
-        this.canUnwhitelistOthers = canUnwhitelistOthers;
-        return this;
-    }
-
-    public BotUser setCanUnwhitelistSelf(boolean canUnwhitelistSelf) {
-        this.canUnwhitelistSelf = canUnwhitelistSelf;
+    public BotUser setCanUnwhitelist(boolean canUnwhitelist) {
+        this.canUnwhitelist = canUnwhitelist;
         return this;
     }
 
@@ -52,19 +40,12 @@ public class BotUser {
         return canConfigure;
     }
 
-    public boolean isCanWhitelistOthers() {
-        return canWhitelistOthers;
+    public boolean isCanWhitelist() {
+        return canWhitelist;
     }
 
-    public boolean isCanWhitelistSelf() {
-        return canWhitelistSelf;
+    public boolean isCanUnwhitelist() {
+        return canUnwhitelist;
     }
 
-    public boolean isCanUnwhitelistOthers() {
-        return canUnwhitelistOthers;
-    }
-
-    public boolean isCanUnwhitelistSelf() {
-        return canUnwhitelistSelf;
-    }
 }

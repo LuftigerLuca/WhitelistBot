@@ -12,7 +12,6 @@ public class BotGuild {
     private String name;
     private String prefix;
     private String language;
-    private String whitelistChannel;
     private List<BotUser> users;
 
     public BotGuild(String guildId) {
@@ -32,11 +31,6 @@ public class BotGuild {
 
     public BotGuild setLanguage(String language) {
         this.language = language;
-        return this;
-    }
-
-    public BotGuild setWhitelistChannel(String whitelistChannel) {
-        this.whitelistChannel = whitelistChannel;
         return this;
     }
 
@@ -71,8 +65,8 @@ public class BotGuild {
         return language;
     }
 
-    public String getWhitelistChannel() {
-        return whitelistChannel;
+    public BotUser getUserById(String userId) {
+        return users.stream().filter(user -> user.getUserId().equals(userId)).findFirst().orElse(null);
     }
 
     public List<BotUser> getUsers() {

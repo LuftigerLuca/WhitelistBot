@@ -1,5 +1,6 @@
 package eu.luftiger.whitelistbot.discordbot;
 
+import eu.luftiger.whitelistbot.discordbot.commands.CommandHandler;
 import eu.luftiger.whitelistbot.discordbot.configuration.ConfigurationHandler;
 import eu.luftiger.whitelistbot.discordbot.database.DataSourceProvider;
 import eu.luftiger.whitelistbot.discordbot.database.DatabaseQueryHandler;
@@ -9,6 +10,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.sql.DataSource;
 import java.io.BufferedReader;
@@ -25,6 +27,7 @@ public class WhitelistBot {
     private DatabaseQueryHandler databaseQueryHandler;
     private GuildsProvider guildsProvider;
     private JDA jda;
+    private CommandHandler commandHandler;
 
     public static void main(String[] args) {
         try {
@@ -51,19 +54,24 @@ public class WhitelistBot {
         guildsProvider.loadGuilds();
 
         logger.info("starting discord bot...");
-        jda = JDABuilder.createDefault(configurationHandler.getConfiguration().getBotToken())
+        jda = JDABuilder.createDefault(configurationHandler.getConfiguration().getBotToken(), GatewayIntent.GUILD_MEMBERS)
                 .setActivity(Activity.of(Activity.ActivityType.valueOf(configurationHandler.getConfiguration().getBotActivityType()), configurationHandler.getConfiguration().getBotActivityName()))
                 .setStatus(OnlineStatus.valueOf(configurationHandler.getConfiguration().getBotStatus()))
                 .addEventListeners(new BotJoinListener(this))
                 .build();
 
         jda.awaitReady();
+
+        logger.info("loading commands...");
+        commandHandler = new CommandHandler(this);
+        commandHandler.registerSlashCommands();
+
         logger.info("WhitelistBot started!");
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
             String line = reader.readLine();
-            if (line.equals("exit")) {
+            if (line.equals("exit") || line.equals("quit") || line.equals("stop")) {
                 logger.info("Shutting down...");
                 jda.shutdown();
                 break;
@@ -93,5 +101,9 @@ public class WhitelistBot {
 
     public JDA getJda() {
         return jda;
+    }
+
+    public CommandHandler getCommandHandler() {
+        return commandHandler;
     }
 }

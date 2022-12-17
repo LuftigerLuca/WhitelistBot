@@ -21,6 +21,14 @@ public record Configuration(BotConfiguration discordbot,
         return discordbot.status();
     }
 
+    public String getBotDefaultPrefix() {
+        return discordbot.defaultprefix();
+    }
+
+    public String getBotDefaultLanguage() {
+        return discordbot.defaultlanguage();
+    }
+
     public String getDatabaseHost() {
         return database.host();
     }
@@ -48,7 +56,9 @@ public record Configuration(BotConfiguration discordbot,
 record BotConfiguration(String token,
                         String activitytype,
                         String activityname,
-                        String status) {
+                        String status,
+                        String defaultprefix,
+                        String defaultlanguage) {
 
 }
 

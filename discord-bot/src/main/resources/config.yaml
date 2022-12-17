@@ -5,6 +5,8 @@ discordbot:
   activityname: "with your feelings"
   #ONLINE, IDLE, DND, INVISIBLE
   status: "ONLINE"
+  defaultprefix: "!"
+  defaultlanguage: "en"
 
 database:
     host: "localhost"

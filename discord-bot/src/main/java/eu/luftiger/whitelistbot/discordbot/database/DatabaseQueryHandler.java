@@ -34,8 +34,7 @@ public class DatabaseQueryHandler {
                 BotGuild guild = new BotGuild(resultSetGuild.getString("id"))
                         .setName(resultSetGuild.getString("name"))
                         .setPrefix(resultSetGuild.getString("prefix"))
-                        .setLanguage(resultSetGuild.getString("language"))
-                        .setWhitelistChannel(resultSetGuild.getString("whitelist_channel"));
+                        .setLanguage(resultSetGuild.getString("language"));
 
                 guilds.add(guild);
             }
@@ -54,10 +53,9 @@ public class DatabaseQueryHandler {
                 if (guild != null){
                     guild.addUser(new BotUser(resultSetUser.getString("user_id"), resultSetUser.getString("guild_id"))
                             .setCanConfigure(resultSetUser.getBoolean("can_configure"))
-                            .setCanWhitelistOthers(resultSetUser.getBoolean("can_whitelist_other"))
-                            .setCanWhitelistSelf(resultSetUser.getBoolean("can_whitelist_self"))
-                            .setCanUnwhitelistSelf(resultSetUser.getBoolean("can_unwhitelist_self"))
-                            .setCanUnwhitelistOthers(resultSetUser.getBoolean("can_unwhitelist_other")));
+                            .setCanWhitelist(resultSetUser.getBoolean("can_whitelist"))
+                            .setCanUnwhitelist(resultSetUser.getBoolean("can_unwhitelist"))
+                    );
                 }
             }
 
@@ -70,16 +68,14 @@ public class DatabaseQueryHandler {
 
     public void addGuild(BotGuild botGuild){
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO guilds (id, name, prefix, language, whitelist_channel) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name = ?, prefix = ?, language = ?, whitelist_channel = ?");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO guilds (id, name, prefix, language) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE name = ?, prefix = ?, language = ?");
             statement.setString(1, botGuild.getGuildId());
             statement.setString(2, botGuild.getName());
             statement.setString(3, botGuild.getPrefix());
             statement.setString(4, botGuild.getLanguage());
-            statement.setString(5, botGuild.getWhitelistChannel());
-            statement.setString(6, botGuild.getName());
-            statement.setString(7, botGuild.getPrefix());
-            statement.setString(8, botGuild.getLanguage());
-            statement.setString(9, botGuild.getWhitelistChannel());
+            statement.setString(5, botGuild.getName());
+            statement.setString(6, botGuild.getPrefix());
+            statement.setString(7, botGuild.getLanguage());
 
             statement.execute();
 
@@ -94,24 +90,19 @@ public class DatabaseQueryHandler {
     public void addUser(BotUser botUser){
         try {
             PreparedStatement statement;
-            if(!botUser.isCanConfigure() && !botUser.isCanUnwhitelistOthers() && !botUser.isCanUnwhitelistSelf() && !botUser.isCanWhitelistOthers() && !botUser.isCanWhitelistSelf()){
+            if(!botUser.isCanConfigure() && !botUser.isCanWhitelist()){
                 statement = connection.prepareStatement("DELETE FROM users WHERE user_id = ?");
                 statement.setString(1, botUser.getUserId());
             } else {
-                statement = connection.prepareStatement("INSERT INTO users (user_id, guild_id, can_configure, can_whitelist_other, can_whitelist_self, can_unwhitelist_other, can_unwhitelist_self) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE can_configure = ?, can_whitelist_other = ?, can_whitelist_self = ?, can_unwhitelist_other = ?, can_unwhitelist_self = ?");
+                statement = connection.prepareStatement("INSERT INTO users (user_id, guild_id, can_configure, can_whitelist, can_unwhitelist) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE can_configure = ?, can_whitelist = ?, can_unwhitelist = ?");
                 statement.setString(1, botUser.getUserId());
                 statement.setString(2, botUser.getGuildId());
                 statement.setBoolean(3, botUser.isCanConfigure());
-                statement.setBoolean(4, botUser.isCanWhitelistOthers());
-                statement.setBoolean(5, botUser.isCanWhitelistSelf());
-                statement.setBoolean(6, botUser.isCanUnwhitelistOthers());
-                statement.setBoolean(7, botUser.isCanUnwhitelistSelf());
-                statement.setBoolean(8, botUser.isCanConfigure());
-                statement.setBoolean(9, botUser.isCanWhitelistOthers());
-                statement.setBoolean(10, botUser.isCanWhitelistSelf());
-                statement.setBoolean(11, botUser.isCanUnwhitelistOthers());
-                statement.setBoolean(12, botUser.isCanUnwhitelistSelf());
-
+                statement.setBoolean(4, botUser.isCanWhitelist());
+                statement.setBoolean(5, botUser.isCanUnwhitelist());
+                statement.setBoolean(6, botUser.isCanConfigure());
+                statement.setBoolean(7, botUser.isCanWhitelist());
+                statement.setBoolean(8, botUser.isCanUnwhitelist());
             }
             statement.execute();
         } catch (SQLException e) {
