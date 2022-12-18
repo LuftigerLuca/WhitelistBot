@@ -1,7 +1,10 @@
 #errors
 nopermission: "You don't have permission to use this command."
 novalidlanguage: "Language must be either 'en' or 'de'."
+novalidpermission: "The permission you entered is not valid."
 
 #messages
 changedprefix: "Changed prefix to %prefix"
 changedlanguage: "Changed language to %language"
+changedrolepermission: "Changed role permission of %role to %permission = %value"
+changeduserpermission: "Changed user permission of %user to %permission = %value"

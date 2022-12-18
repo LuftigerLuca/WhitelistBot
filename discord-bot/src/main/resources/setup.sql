@@ -17,3 +17,14 @@ create table if not exists users (
     primary key (guild_id, user_id),
     foreign key (guild_id) references guilds(id)
 );
+
+create table if not exists roles(
+    guild_id varchar(32) not null,
+    group_id varchar(32) not null,
+    can_configure boolean not null,
+    can_whitelist boolean not null,
+    can_unwhitelist boolean not null,
+
+    primary key (guild_id, group_id),
+    foreign key (guild_id) references guilds(id)
+);

@@ -24,7 +24,7 @@ public class UpdateDatabaseScheduler {
         };
 
         executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(runnable, 0, 10, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(runnable, 0, bot.getConfigurationHandler().getConfiguration().getDatabaseUpdatePeriod(), TimeUnit.SECONDS);
     }
 
     public void stop(){

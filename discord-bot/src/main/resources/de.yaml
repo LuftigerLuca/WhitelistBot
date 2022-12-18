@@ -1,6 +1,9 @@
 nopermission: "Dir fehlt die Berechtigung, diesen Befehl auszuführen."
 novalidlanguage: "Es sind nur 'de' und 'en' als Sprachen verfügbar."
+novalidpermission: "Die Berechtigung, die du eingegeben hast, ist nicht gültig."
 
 #messages
 changedprefix: "Der Prefix wurde zu %prefix geändert."
 changedlanguage: "Die Sprache wurde zu %language geändert."
+changedrolepermission: "Die Berechtigung von %role wurde auf %permission = %value geändert."
+changeduserpermission: "Die Berechtigung von %user wurde auf %permission = %value geändert."

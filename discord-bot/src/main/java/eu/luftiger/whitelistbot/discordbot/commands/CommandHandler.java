@@ -34,9 +34,18 @@ public class CommandHandler extends ListenerAdapter {
                 .addSubcommands(new SubcommandData("prefix", "Change the prefix")
                                 .addOption(OptionType.STRING, "prefix", "The new prefix", true),
                         new SubcommandData("language", "Change the language")
-                                .addOption(OptionType.STRING, "language", "The new language", true));
+                                .addOption(OptionType.STRING, "language", "The new language", true),
+                        new SubcommandData("role", "Edit a roles permissions")
+                                .addOption(OptionType.ROLE, "role", "The role to edit", true)
+                                .addOption(OptionType.STRING, "permission", "the permission to edit, either configure, whitelist or un_whitelist", true)
+                                .addOption(OptionType.BOOLEAN, "value", "The new value of the permission", true),
+                        new SubcommandData("user", "Edit a users permissions")
+                                .addOption(OptionType.USER, "user", "The user to edit", true)
+                                .addOption(OptionType.STRING, "permission", "the permission to edit, either configure, whitelist or un_whitelist", true)
+                                .addOption(OptionType.BOOLEAN, "value", "The new value of the permission", true));
 
         jda.updateCommands().addCommands(whitelistCommand, unwhitelistCommand, configureCommand).queue();
+
     }
 
     @Override

@@ -1,6 +1,7 @@
 package eu.luftiger.whitelistbot.discordbot;
 
 import eu.luftiger.whitelistbot.discordbot.database.DatabaseQueryHandler;
+import eu.luftiger.whitelistbot.discordbot.model.BotRole;
 import eu.luftiger.whitelistbot.discordbot.model.BotGuild;
 import eu.luftiger.whitelistbot.discordbot.model.BotUser;
 
@@ -38,6 +39,10 @@ public class GuildsProvider {
             databaseQueryHandler.addGuild(guild);
             for (BotUser user : guild.getUsers()) {
                 databaseQueryHandler.addUser(user);
+            }
+
+            for (BotRole role : guild.getRoles()) {
+                databaseQueryHandler.addGroup(role);
             }
         }
     }
